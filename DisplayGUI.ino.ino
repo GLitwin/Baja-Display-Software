@@ -4,6 +4,29 @@
 #include <Adafruit_GFX.h>
 #include <gfxfont.h>
 
+
+//TESTING VALUES
+//***************
+
+char text[] = {"Baja Display Team!"};
+//Gauge Values - different ones should be set for each gauge
+float maxVal = 100; //Max value to be displayed by the gauge
+float minVal = 0; //Min value to be displayed by the gauge
+float value = 70; //Used for testing the output of the gauge bar
+float range = maxVal - minVal; //range of values that the gauge will be representing
+float xFill = 0; //Amount, in pixels, to fill the gauge bar
+
+int gaugeHeight = 100;
+int gaugeWidth = 600;
+int gaugeLocation[] = {100, 50}; ///x,y
+
+/*
+ * Notes:
+ * - All screen locations are referenced from the top left corner, top left corner is (0,0); 
+ */
+//***************
+
+
 // Library only supports hardware SPI at this time
 // Connect SCLK to UNO Digital #13 (Hardware SPI clock)
 // Connect MISO to UNO Digital #12 (Hardware SPI MISO)
@@ -17,20 +40,10 @@ Adafruit_RA8875 tft = Adafruit_RA8875(RA8875_CS, RA8875_RESET);
 void displayText(const char* text, uint16_t textScale, uint16_t foregroundColor, uint16_t backgroundColor, uint16_t xLocation, uint16_t yLocation);
 void displayGauge(uint16_t value, uint16_t width, uint16_t height, uint16_t xLocation, uint16_t yLocation, uint16_t minVal, uint16_t maxVal);
 
-//TESTING VALUES
-char text[] = {"Baja Display Team!"};
-uint16_t maxVal = 100;
-uint16_t minVal = 0;
-uint16_t value = 70;
 
-float pixelDiff; //= (gaugeWidth/range)
-float range = maxVal - minVal;
 
-float xFill = 0;
 
-int gaugeHeight = 100;
-int gaugeWidth = 600;
-int gaugeLocation[] = {100, 50}; ///x,y
+
 
 void setup() {
   // put your setup code here, to run once:
@@ -51,17 +64,19 @@ void setup() {
   tft.PWM1out(255);
 
   //TESTING CODE
+  //******************
   tft.fillScreen(RA8875_WHITE);
   displayText(text, 2, RA8875_BLACK, RA8875_WHITE, 100, 300);
   //displayGauge(value, 600, 100, 100, 50, minVal, maxVal);
   //tft.drawRect(100, 50, 600, 100, 0x0000); // 0x0000 is Black
   //tft.fillRect(101, 51, 418, 98, RA8875_RED);
-
+  //******************
 
 }
 
 void loop() {
-  //float pixelDiff = (gaugeWidth/range);
+  //TESTING CODE
+  //******************
   //Formula for this ^ would normally be ((value-LastValue)/range)*gaugeWidth but it only goes down by 1 in this test so there is no need for value-Lastvalue
   //This is used to determine how many pixels to erase when the bar decreases by one value because the pizel width of the bar will not be that same as the range of value to be displayed by the gauge
     for (int i = maxVal; i > minVal; i--)
@@ -76,7 +91,9 @@ void loop() {
     displayGauge(i, gaugeWidth, gaugeHeight, gaugeLocation[0], gaugeLocation[1], minVal, maxVal);
     delay(30);
   }
+  //******************
 
+  
 }
 
 void displayText(const char* text, uint16_t textScale, uint16_t foregroundColor, uint16_t backgroundColor, uint16_t xLocation, uint16_t yLocation)
